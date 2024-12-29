@@ -11,7 +11,7 @@ def _load_config()->dict:
         config_dict = yaml.safe_load(f)
     return config_dict
 
-def config(env_name: str)->str|None:
+def config(env_name: str)->str|None|dict:
     global config_dict
 
     if config_dict is None:
