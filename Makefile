@@ -8,3 +8,6 @@ install:
 
 package:
 	pip3 freeze > requirements.txt
+
+clean:
+	rm -f *.log
