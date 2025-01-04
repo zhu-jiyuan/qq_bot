@@ -2,3 +2,4 @@ qq_bot/
 config.yaml
 *.log
 __pycache__/
+qqbot.tar.gz
