@@ -11,3 +11,4 @@ package:
 
 clean:
 	rm -f *.log
+	mongo qqbot --eval "printjson(db.dropDatabase())"

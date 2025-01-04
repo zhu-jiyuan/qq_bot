@@ -1,7 +1,7 @@
 
 import botpy
-from botpy.message import Message, DirectMessage, GroupMessage, C2CMessage
-from pprint import pprint
+from botpy.message import GroupMessage, C2CMessage
+# from pprint import pprint
 
 logging = botpy.get_logger()
 
@@ -18,12 +18,12 @@ class BenDanClient(botpy.Client):
     # qq group message
     async def on_group_at_message_create(self, message: GroupMessage):
         reply = make_reply(message)
-        await self.handler(message.author.member_openid, message.content, reply)
+        await self.handler(message.author.member_openid, message.content, reply, message.group_openid)
 
     # qq private message
     async def on_c2c_message_create(self, message: C2CMessage):
         reply = make_reply(message)
-        await self.handler(message.author.user_openid, message.content, reply)
+        await self.handler(message.author.user_openid, message.content, reply, None)
 
     def register_handler(self, handler):
         self.handler = handler

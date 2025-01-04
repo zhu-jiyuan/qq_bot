@@ -1,18 +1,38 @@
 # Please install OpenAI SDK first: `pip3 install openai`
 from openai import AsyncOpenAI
-import utils
+from models.user import User
+from models.group import Group
+from utils import config_loader
 
-config = utils.config
+config = config_loader.config
 
 client = AsyncOpenAI(api_key=config("deepseek"), base_url="https://api.deepseek.com")
 
-async def chat(user_msg):
+async def chat(message_list: list):
     response = await client.chat.completions.create(
         model="deepseek-chat",
-        messages=[
-            {"role": "system", "content": "你叫bendan, 你是一个漂亮的二次元动漫女主，同时你又是一个知识渊博的助手，每次你都会用中文回答。"},
-            {"role": "user", "content": user_msg}
-        ],
+        messages=message_list,
         stream=False
     )
     return response.choices[0].message.content
+
+
+async def chat_with_user(message: str, user_obj: User):
+    message_list = user_obj.ai.cur_message_list
+    message_list.append({"role": "user", "content": message})
+
+    reply = await chat(message_list)
+
+    return reply
+
+async def chat_with_group(message: str, group_obj: Group):
+    message_list = group_obj.ai.cur_message_list
+    message_list.append({"role": "user", "content": message})
+
+    reply = await chat(message_list)
+    return reply
+
+async def chat_with_quick(message: str):
+    message_list = [{"role": "user", "content": message}]
+    reply = await chat(message_list)
+    return reply
