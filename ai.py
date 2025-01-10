@@ -14,7 +14,7 @@ async def chat(message_list: list):
         messages=message_list,
         stream=False
     )
-    return response.choices[0].message.content
+    return response.choices[0].message
 
 
 async def chat_with_user(message: str, user_obj: User):
@@ -22,17 +22,19 @@ async def chat_with_user(message: str, user_obj: User):
     message_list.append({"role": "user", "content": message})
 
     reply = await chat(message_list)
+    message_list.append({"role": reply.role, "content": reply.content})
 
-    return reply
+    return reply.content
 
 async def chat_with_group(message: str, group_obj: Group):
     message_list = group_obj.ai.cur_message_list
     message_list.append({"role": "user", "content": message})
 
     reply = await chat(message_list)
-    return reply
+    message_list.append({"role": reply.role, "content": reply.content})
+    return reply.content
 
 async def chat_with_quick(message: str):
     message_list = [{"role": "user", "content": message}]
     reply = await chat(message_list)
-    return reply
+    return reply.content
