@@ -5,6 +5,8 @@ secret: ""
 
 # ai
 deepseek: ""
+timeout: 10
+deepseek_model: "deepseek-reasoner"
 
 # mongodb
 

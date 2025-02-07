@@ -14,6 +14,7 @@ import ben_dan_bot
 import botpy
 logging = botpy.get_logger()
 import ai
+import traceback
 
 def try_update_today_info(obj: User|Group):
     last_talk_ts = date.second()
@@ -57,7 +58,8 @@ async def handler(user_id, message: str, reply, group_id: None|str, loop:EventLo
             await reply(reply_msg)
         
     except Exception as e:
-        logging.error(f"Unexpected error for user {user_id} with message '{message}': {e}")
+        logging.error(f"user:{user_id}, message:'{message}',error:{e}")
+        logging.error(traceback.format_exc())
     finally:
         update_base_profile(obj = user_obj)
         if group_obj:
